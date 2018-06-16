@@ -27,7 +27,55 @@
     <div class="background-error margin-l padding-xs color-white">Error - Your channel could not be created</div>
   <% } %>
 <% } %>
-
+<script>
+	function porter(x,n){
+		var x1=document.createElement("INPUT");
+		x1.setAttribute("type","number");
+		x1.setAttribute("min","0");
+		x1.setAttribute("max","65535");
+		if(x=="splitter"){
+			x1.setAttribute("name","sport"+n);
+			x1.setAttribute("placeholder","Enter splitter"+n+" port number(optional)");
+		}
+		else{
+			x1.setAttribute("name","mport"+n);
+			x1.setAttribute("placeholder","Enter peer"+n+" port number(optional)");
+		}
+		return x1;
+	}
+	var l=0;
+	function addSplitter(){
+			
+			//x2=document.createElement('input');
+			var e=document.querySelector(".splitmon");
+			var ne;
+			var f;
+			var x=document.getElementById("splitterCount");
+			console.log(x.value);
+			if(l<x.value){
+				ne=x.value;
+				f=true;
+			}
+			else{
+				ne=l;
+				l=x.value;
+				f=false;
+			}
+			ne=ne<1?1:ne;
+			for(var i=l; i<ne;i++){
+				if(f){
+					e.appendChild(porter("splitter",i));
+					e.appendChild(porter("monitor",i));
+				}
+				else{
+					e.removeChild(e.lastChild);
+					e.removeChild(e.lastChild);
+				}
+			}
+			l=x.value;
+			//document.getElementById(".splitmon").appendchild(x2);
+	}
+</script>
 <fieldset class="">
   <legend>Add new channel</legend>
   <form method="POST" action="/add">
@@ -35,9 +83,16 @@
     <textarea type="textarea" name="channelDescription" placeholder="Enter channel description" rows="7"></textarea>
     <input type="text" name="sourceAddress" id="form-source-address" placeholder="Enter source address" disabled>
     <input type="number" name="sourcePort" id="form-source-port" min="0" max="65535" placeholder="Enter source port number" disabled>
-    <input type="number" name="splitterPort" min="0" max="65535" placeholder="Enter splitter port number(optional)">
-    <input type="number" name="monitorPort" min="0" max="65535" placeholder="Enter monitor port number(optional)">
-    <input type="number" name="headerSize" min="0" placeholder="Enter header size">
+    
+    <!--Experimental remove soon-->
+    <input type="number" id="splitterCount" min="0" max="65535" placeholder="Enter number of splitters(optional)" 
+		onkeyup="addSplitter();" onmousepress="addsplitter();" value=1 style="-moz-appearance:textfield;" >
+	
+    <input type="number" name="splitterPort" min="1" max="65535" placeholder="Enter splitter port number(optional)">
+    <input type="number" name="monitorPort" min="1" max="65535" placeholder="Enter monitor port number(optional)">
+    <div class="splitmon" name="splitmon">
+	</div>
+    <input type="number" name="headerSize" min="1" placeholder="Enter header size">
     <div class="field">
       <label class="control checkbox">
           <input type="checkbox" checked="true" value="true" name="isSmartSourceClient"
