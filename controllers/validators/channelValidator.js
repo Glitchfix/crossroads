@@ -132,13 +132,15 @@ const frontendAdd = (req, res, next) => {
   }
 
   // splitterPort and monitorPort are optional fields
-  if (isValidPort(req.body.splitterPort) && isValidPort(req.body.monitorPort)) {
-    req.body.splitterPort = parseInt(req.body.splitterPort, 10);
-    req.body.monitorPort = parseInt(req.body.monitorPort, 10);
+  for(var i=0;i<req.body.splitterCount;i++){
+  if (isValidPort(req.body.splitterPort[i]) && isValidPort(req.body.monitorPort[i])) {
+    req.body.splitterPort[i] = parseInt(req.body.splitterPort[i], 10);
+    req.body.monitorPort[i] = parseInt(req.body.monitorPort[i], 10);
   } else {
-    req.body.splitterPort = undefined;
-    req.body.monitorPort = undefined;
+    req.body.splitterPort[i] = undefined;
+    req.body.monitorPort[i] = undefined;
   }
+}
 
   req.body.headerSize = parseInt(req.body.headerSize, 10);
   req.body.isSmartSourceClient = req.body.isSmartSourceClient ? true : false;

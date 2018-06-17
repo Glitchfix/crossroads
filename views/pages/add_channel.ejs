@@ -34,11 +34,11 @@
 		x1.setAttribute("min","0");
 		x1.setAttribute("max","65535");
 		if(x=="splitter"){
-			x1.setAttribute("name","sport"+n);
+			x1.setAttribute("name","splitterPort");
 			x1.setAttribute("placeholder","Enter splitter"+n+" port number(optional)");
 		}
 		else{
-			x1.setAttribute("name","mport"+n);
+			x1.setAttribute("name","monitorPort");
 			x1.setAttribute("placeholder","Enter peer"+n+" port number(optional)");
 		}
 		return x1;
@@ -62,7 +62,7 @@
 				f=false;
 			}
 			ne=ne<1?1:ne;
-			for(var i=l; i<ne;i++){
+			for(var i=l; i<ne-1;i++){
 				if(f){
 					e.appendChild(porter("splitter",i));
 					e.appendChild(porter("monitor",i));
@@ -85,8 +85,8 @@
     <input type="number" name="sourcePort" id="form-source-port" min="0" max="65535" placeholder="Enter source port number" disabled>
     
     <!--Experimental remove soon-->
-    <input type="number" id="splitterCount" min="0" max="65535" placeholder="Enter number of splitters(optional)" 
-		onkeyup="addSplitter();" onmousepress="addsplitter();" value=1 style="-moz-appearance:textfield;" >
+    <input type="number" id="splitterCount" name="splitterCount" min="0" max="65535" placeholder="Enter number of splitters(optional)" 
+		onkeyup="addSplitter();" onmousepress="addsplitter();" style="-moz-appearance:textfield;" >
 	
     <input type="number" name="splitterPort" min="1" max="65535" placeholder="Enter splitter port number(optional)">
     <input type="number" name="monitorPort" min="1" max="65535" placeholder="Enter monitor port number(optional)">

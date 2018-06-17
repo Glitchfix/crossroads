@@ -38,6 +38,14 @@ const setProcessMap = mapp => {
  * @returns {Array} Array of splitter and monitor address
  */
 const launch = async channel => {
+	var splitterPortList = channel.splitterPort;
+	var monitorPortList = channel.monitorPort;
+	var splitterAddressList=[];
+	var monitorAddressList=[];
+	var splitterlistenPortList=[];
+	for(var i=0;i<channel.splitterCount;i++){
+		channel.splitterPort=splitterPortList[i];
+		channel.monitorPort=monitorPortList[i];
   const splitter = await launchSplitter(channel);
   if (splitter.error) {
     return false;
@@ -52,13 +60,16 @@ const launch = async channel => {
   } else {
     logger('DEBUG', 'Monitor process launched for channel: ' + channel.url);
   }
-
+	
   processMap.set(channel.url, {
     splitter: splitter.process,
     monitor: monitor.process
   });
-
-  return [splitter.address, monitor.address, splitter.listenPort];
+  splitterAddressList.push(splitter.address);
+  monitorAddressList.push(monitor.address);
+  splitterlistenPortList.push(splitter.listenPort);
+	}
+  return [splitterAddressList.join(','), monitorAddressList.join(','), splitterlistenPortList.join(',')];
 };
 
 /**

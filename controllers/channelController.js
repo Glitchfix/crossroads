@@ -83,6 +83,7 @@ const addChannel = async (req, res) => {
       sourceAddress: req.body.sourceAddress,
       sourcePort: req.body.sourcePort,
       headerSize: req.body.headerSize,
+      splitterCount: req.body.splitterCount,
       splitterPort: req.body.splitterPort,
       monitorPort: req.body.monitorPort,
       isSmartSourceClient: req.body.isSmartSourceClient,
