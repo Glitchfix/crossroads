@@ -10,7 +10,8 @@ const setDB = database => {
 };
 
 const start = () => {
-  db.prepare(Q.createTable).run();
+  db.prepare(Q.createChannelTable).run();
+  db.prepare(Q.createSplitterTable).run();
 };
 
 const getAllChannels = (limit = 20, offset = 0) => {
@@ -31,9 +32,26 @@ const getChannel = url => {
   }
 };
 
+const getSplitter = url => {
+  try {
+	  var splitters=db.prepare(Q.selectSplitter).all({url});
+	  for(var i=0;i<splitters.length;i++){
+		  splitters[i]=String(splitters[i].splitterAddress);
+	  }
+    return splitters;
+  } catch (e) {
+    logger('WARNING', 'getSplitter() crash', e);
+    return false;
+  }
+};
+
 const addChannel = channel => {
   try {
     db.prepare(Q.insertChannel).run(channel);
+    for(var i=0;i<channel.splitterCount;i++){
+		channel.iterSplitterAddress=channel.splitterAddress[i];
+		db.prepare(Q.insertSplitter).run(channel);
+	}
     return true;
   } catch (e) {
     logger('WARNING', 'addChannel() crash', e);
@@ -42,7 +60,7 @@ const addChannel = channel => {
 };
 
 const getChannelHash = url => {
-  try {
+  try {		
     return db.prepare(Q.selectHash).get(url);
   } catch (e) {
     logger('WARNING', 'getChannelHash() crash', e);
@@ -76,6 +94,7 @@ module.exports = {
   start,
   getAllChannels,
   getChannel,
+  getSplitter,
   addChannel,
   getChannelHash,
   editChannel,

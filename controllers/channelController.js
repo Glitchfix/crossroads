@@ -36,6 +36,9 @@ const engine = require('../configs/config').standaloneEngine
  */
 const listAllChannels = (req, res) => {
   let result = db.getAllChannels(req.query.limit, req.query.offset);
+  for(var i=0;i < result.length; i++){
+	  result[i].splitterAddress=db.getSplitter(result[i].url);
+  }
   result = result === undefined ? [] : result;
   if (result) {
     res.json(result);
@@ -54,6 +57,7 @@ const listAllChannels = (req, res) => {
  */
 const getChannel = (req, res) => {
   const result = db.getChannel(req.params.channelUrl);
+  result.splitterAddress = db.getSplitter(req.params.channelUrl);
   if (result) {
     res.json(result);
   } else if (result === undefined) {

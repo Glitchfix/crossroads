@@ -69,7 +69,7 @@ const launch = async channel => {
   monitorAddressList.push(monitor.address);
   splitterlistenPortList.push(splitter.listenPort);
 	}
-  return [splitterAddressList.join(','), monitorAddressList.join(','), splitterlistenPortList.join(',')];
+  return [splitterAddressList, monitorAddressList, splitterlistenPortList];
 };
 
 /**
