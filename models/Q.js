@@ -11,7 +11,8 @@ const createChannelTable = `CREATE TABLE IF NOT EXISTS channels (
 
 const createSplitterTable = `CREATE TABLE IF NOT EXISTS splitter (
 	splitterUrl TEXT    NOT NULL,
-	splitterAddress TEXT    NOT NULL
+	splitterAddress TEXT    NOT NULL,
+	splitterAvailable INTEGER NOT NULL DEFAULT 1
 );`;
 
 const selectAllChannels = `SELECT name, url, description
@@ -23,7 +24,7 @@ const selectChannel = `SELECT name, description
   FROM channels WHERE url = (?)`;
 
 const selectSplitter = `SELECT splitterAddress
-  FROM splitter WHERE splitterUrl = (@url)`;
+  FROM splitter WHERE splitterUrl = (@url) AND splitterAvailable = 1`;
 
 const insertChannel = `INSERT INTO channels VALUES (
   @name, @password, @url, @description, @headerSize, 1 )`;
@@ -39,6 +40,10 @@ const deleteChannel = 'DELETE FROM channels,splitters WHERE url = (?)';
 
 const selectHash = 'SELECT password FROM channels WHERE url = (?)';
 
+const updateSplitterAvailable  = `UPDATE splitter
+  SET splitterAvailable = @splitterAvailable
+  WHERE splitterAddress = @splitterAddress`;
+
 module.exports = {
   createChannelTable,
   createSplitterTable,
@@ -49,5 +54,6 @@ module.exports = {
   insertSplitter,
   updateChannel,
   deleteChannel,
-  selectHash
+  selectHash,
+  updateSplitterAvailable
 };

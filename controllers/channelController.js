@@ -56,7 +56,7 @@ const listAllChannels = (req, res) => {
  * @param {Object} res - Express response object
  */
 const getChannel = (req, res) => {
-  const result = db.getChannel(req.params.channelUrl);
+  var result = db.getChannel(req.params.channelUrl);
   result.splitterAddress = db.getSplitter(req.params.channelUrl);
   if (result) {
     res.json(result);
@@ -157,10 +157,20 @@ const removeChannel = (req, res) => {
   }
 };
 
+const updateSplitterAvailable = (req, res) => {
+	const splitter ={ splitterAddress: req.params.splitterAddress, splitterAvailable: req.params.splitterAvailable };
+	try{
+		db.updateSplitterAvailable(splitter);
+	} catch (e) {
+		res.sendStatus(500);
+	}
+};
+
 module.exports = {
   listAllChannels,
   getChannel,
   addChannel,
   editChannel,
-  removeChannel
+  removeChannel,
+  updateSplitterAvailable
 };

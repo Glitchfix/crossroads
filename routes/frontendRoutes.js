@@ -19,5 +19,6 @@ router.get('/remove', cntrl.renderRemoveChannelForm);
 router.post('/remove', [check.remove, check.auth, cntrl.removeChannel]);
 router.get('/:channelUrl', cntrl.renderAChannel);
 router.get('/channel/:channelUrl',chnl.getChannel);
+router.get('/splitterAvailable/:splitterAddress/:splitterAvailable', chnl.updateSplitterAvailable);
 
 module.exports = router;

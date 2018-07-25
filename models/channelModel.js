@@ -89,6 +89,14 @@ const removeChannel = url => {
   }
 };
 
+const updateSplitterAvailable = (splitter) => {
+	try{
+		db.prepare(Q.updateSplitterAvailable).run(splitter);
+	} catch (e) {
+		logger('WARNING', 'updateSplitterAvailable() crash', e);
+	}
+};
+
 module.exports = {
   setDB,
   start,
@@ -98,5 +106,6 @@ module.exports = {
   addChannel,
   getChannelHash,
   editChannel,
-  removeChannel
+  removeChannel,
+  updateSplitterAvailable
 };
